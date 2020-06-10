@@ -3,6 +3,7 @@
  * All rights reserved
  */
 
+#include <stdlib.h>
 #include "multi_timer.h"
 
 //timer handle list head.
@@ -69,8 +70,8 @@ void timer_stop(struct Timer* handle)
 void timer_loop()
 {
 	struct Timer* target;
-	for(target=head_handle; target; target=target->next) {
-		if(_timer_ticks >= target->timeout) {
+	for(target=head_handle; target; target=target->next) 
+		if((int32_t)(target->timeout - _timer_ticks) <= 0) {
 			if(target->repeat == 0) {
 				timer_stop(target);
 			} else {
